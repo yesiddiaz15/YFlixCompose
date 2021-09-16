@@ -6,5 +6,5 @@ import retrofit2.http.Url
 
 interface APIService {
     @GET
-    suspend fun getMovies(@Url url: String):Response<Pages>
+    suspend fun getMovies(@Url url: String):Response<PagesResponse>
 }
