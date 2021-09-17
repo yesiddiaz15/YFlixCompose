@@ -122,7 +122,7 @@ fun ItemMovie(movies: MoviesResponse) {
         Image(
             painter = rememberImagePainter(build),
             contentDescription = null,
-            modifier = Modifier.size(180.dp),
+            modifier = Modifier.size(185.dp),
             contentScale = ContentScale.FillBounds
         )
     }
