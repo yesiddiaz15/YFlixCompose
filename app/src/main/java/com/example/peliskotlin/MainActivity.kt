@@ -1,23 +1,25 @@
 package com.example.peliskotlin
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.peliskotlin.ui.theme.PelisKotlinTheme
@@ -27,17 +29,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.platform.ComposeView
 
 class MainActivity : ComponentActivity() {
+
     @ExperimentalPagerApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        searchByPage(1, this)
-
+        searchByPage(1)
+        searchByPage(2)
+        Thread.sleep(500)
         setContent {
             PelisKotlinTheme {
                 MainScreen()
@@ -50,10 +51,7 @@ class MainActivity : ComponentActivity() {
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen() {
-
     var state by remember { mutableStateOf(0) }
-    var count by rememberSaveable { mutableStateOf(0) }
-
     val titles = listOf("Movies", "Series")
     Column {
         TopBar()
@@ -68,17 +66,10 @@ fun MainScreen() {
         }
         when (state) {
             0 -> {
-                RecyclerMovies(mutableList.toList()) {
-                    count++
-                    println(count)
-                }
+                RecyclerMovies(mutableList.toList())
             }
             else -> {
-                Box(
-                    modifier = Modifier
-                        .background(Color.Cyan)
-                        .size(50.dp)
-                )
+
             }
         }
     }
@@ -95,7 +86,7 @@ val mutableList = mutableListOf<MoviesResponse>()
 
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
-private fun searchByPage(page: Int, ctx: Context) {
+private fun searchByPage(page: Int) {
     mutableList.clear()
     CoroutineScope(Dispatchers.IO).launch {
         val call = getRetrofit().create(APIService::class.java)
@@ -104,25 +95,17 @@ private fun searchByPage(page: Int, ctx: Context) {
         if (call.isSuccessful) {
             val images = moviesByPage?.results ?: emptyList()
             mutableList.addAll(images)
-        } else println("Error al consumir API")
-
-        ComposeView(ctx).apply {
-            setContent {
-                MainScreen()
-            }
+        } else {
+            println("Error al consumir API")
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RecyclerMovies(list: List<MoviesResponse>, onClick: () -> Unit) {
+fun RecyclerMovies(list: List<MoviesResponse>) {
     Column {
-
-        Button(onClick = onClick) {
-            Text(text = "up ${mutableList.size}")
-        }
-        LazyVerticalGrid(cells = GridCells.Adaptive(minSize = 128.dp)) {
+        LazyVerticalGrid(cells = GridCells.Fixed(3)) {
             items(list) { movie ->
                 ItemMovie(movie)
             }
@@ -133,11 +116,14 @@ fun RecyclerMovies(list: List<MoviesResponse>, onClick: () -> Unit) {
 @Composable
 fun ItemMovie(movies: MoviesResponse) {
     val build = "https://image.tmdb.org/t/p/w500" + movies.poster_path
-    Box(Modifier.background(Color.Blue)) {
+    Card(
+        modifier = Modifier.padding(5.dp)
+    ) {
         Image(
             painter = rememberImagePainter(build),
             contentDescription = null,
-            modifier = Modifier.size(128.dp)
+            modifier = Modifier.size(180.dp),
+            contentScale = ContentScale.FillBounds
         )
     }
 }
