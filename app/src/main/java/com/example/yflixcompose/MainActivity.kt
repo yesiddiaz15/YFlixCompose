@@ -1,12 +1,10 @@
-package com.example.peliskotlin
+package com.example.yflixcompose
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,10 +17,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.example.peliskotlin.ui.theme.PelisKotlinTheme
+import com.example.yflixcompose.ui.theme.YFlixComposeTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +37,7 @@ class MainActivity : ComponentActivity() {
         searchByPage(2)
         Thread.sleep(500)
         setContent {
-            PelisKotlinTheme {
+            YFlixComposeTheme {
                 MainScreen()
             }
         }
@@ -133,7 +130,7 @@ fun ItemMovie(movies: MoviesResponse) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    PelisKotlinTheme() {
+    YFlixComposeTheme() {
         MainScreen()
     }
 }

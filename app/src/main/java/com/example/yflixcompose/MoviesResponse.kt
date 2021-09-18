@@ -1,4 +1,4 @@
-package com.example.peliskotlin
+package com.example.yflixcompose
 
 data class MoviesResponse(
     var poster_path: String,

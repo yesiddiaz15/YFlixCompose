@@ -1,4 +1,4 @@
-package com.example.peliskotlin
+package com.example.yflixcompose
 
 import retrofit2.Response
 import retrofit2.http.GET

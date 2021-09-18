@@ -1,4 +1,4 @@
-package com.example.peliskotlin.ui.theme
+package com.example.yflixcompose.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

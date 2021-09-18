@@ -1,4 +1,4 @@
-package com.example.peliskotlin
+package com.example.yflixcompose
 
 import org.junit.Test
 
